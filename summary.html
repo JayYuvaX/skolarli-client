@@ -33,10 +33,31 @@
 
         let unanswered = total - answered;
 
+        let correct = 0;
+        let wrong = 0;
+
+        questions.forEach(q => {
+
+            let userAnswer = answers[q.id];
+
+            if (userAnswer !== undefined) {
+
+                if (userAnswer === q.correct) {
+                    correct++;
+                } else {
+                    wrong++;
+                }
+
+            }
+
+        });
+
         document.getElementById("summary").innerHTML = `
 <p>Total Questions: ${total}</p>
 <p>Answered Questions: ${answered}</p>
 <p>Unanswered Questions: ${unanswered}</p>
+<p class="text-green-600 font-bold">Correct Answers: ${correct}</p>
+<p class="text-red-600 font-bold">Wrong Answers: ${wrong}</p>
 `;
 
     </script>

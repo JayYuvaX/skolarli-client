@@ -7,12 +7,14 @@ const questions = [
             "A CSS property",
             "A database connection",
             "A loop type"
-        ]
+        ],
+        correct: 0
     },
     {
         id: 2,
         question: "Which keyword is used to declare variables in JavaScript?",
-        options: ["var", "let", "const", "All of the above"]
+        options: ["var", "let", "const", "All of the above"],
+        correct: 3
     },
     {
         id: 3,
@@ -22,17 +24,19 @@ const questions = [
             "JSON.parse()",
             "JSON.convert()",
             "JSON.object()"
-        ]
+        ],
+        correct: 1
     },
     {
         id: 4,
         question: "What is the output type of typeof null?",
-        options: ["object", "null", "undefined", "number"]
+        options: ["object", "null", "undefined", "number"],
+        correct: 0
     },
     {
         id: 5,
         question: "Which array method adds an element at the end?",
-        options: ["push()", "pop()", "shift()", "map()"]
-    },
-
+        options: ["push()", "pop()", "shift()", "map()"],
+        correct: 0
+    }
 ];
