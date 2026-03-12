@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Assessment</title>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+
+</head>
+
+<body class="bg-gray-100">
+
+    <div class="max-w-3xl mx-auto p-6">
+
+        <!-- Landing Page -->
+        <div id="landing" class="text-center">
+            <h1 class="text-3xl font-bold mb-4">Welcome to the Assessment</h1>
+
+            <h2 class="text-xl mb-6">JavaScript Fundamentals</h2>
+
+            <button id="startTest" class="bg-blue-500 text-white px-6 py-2 rounded">
+                Start Test
+            </button>
+        </div>
+
+        <!-- Test Interface -->
+
+        <div id="testArea" class="hidden">
+
+            <div class="flex justify-between mb-4">
+                <h2 id="questionNumber" class="font-bold"></h2>
+                <button id="submitTest" class="bg-green-500 text-white px-4 py-2 rounded">
+                    Submit
+                </button>
+            </div>
+
+            <div class="bg-white p-4 rounded shadow">
+
+                <h3 id="questionText" class="mb-4"></h3>
+
+                <div id="options"></div>
+
+            </div>
+
+            <div class="flex justify-between mt-4">
+
+                <button id="prevBtn" class="bg-gray-400 text-white px-4 py-2 rounded">
+                    Previous
+                </button>
+
+                <button id="nextBtn" class="bg-blue-500 text-white px-4 py-2 rounded">
+                    Next
+                </button>
+
+            </div>
+
+            <!-- Question Palette -->
+
+            <div class="mt-6">
+                <h4 class="font-bold mb-2">Questions</h4>
+                <div id="palette" class="flex gap-2"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>
