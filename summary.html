@@ -1,12 +1,18 @@
+<div id="review" class="hidden "></div>
+
 <script src="https://cdn.tailwindcss.com"></script>
+
 <div id="summary" class="hidden "></div>
+<div class="flex justify-center">
+    <button onclick="goHome()" class="px-8 py-3 bg-gradient-to-r from-blue-300 via-pink-300 to-orange-300 
+text-white font-semibold rounded-full shadow-lg 
+hover:scale-105 hover:shadow-xl transition duration-300">
 
-<button onclick="goHome()" class="mt-6 bg-blue-500 text-white px-6 py-2 rounded">
-    Go to Home
-</button>
+        Restart Assessment
 
-
-<div id="review" class="hidden" cla></div>
+    </button>
+</div>
+<div id="review" class="hidden"></div>
 
 <script>
 
@@ -15,9 +21,9 @@
     fetch("https://skolarli-server.onrender.com/api/questions")
         .then(res => res.json())
         .then(data => {
-            // document.getElementById("loader").style.display = "none"
+
             document.getElementById("summary").classList.remove("hidden")
-            document.getElementById("review").classList.remove("hidden")
+
             let total = data.length
             let answered = Object.keys(answers).length
             let unanswered = total - answered
@@ -39,23 +45,46 @@
 
             })
 
+            let percentage = Math.round((correct / total) * 100)
+
             document.getElementById("summary").innerHTML = `
 
-<h2 class="text-2xl font-bold mb-4">Assessment Summary</h2>
+<div class="text-center mb-6">
 
-<p>Total Questions: ${total}</p>
-<p>Answered Questions: ${answered}</p>
-<p>Unanswered Questions: ${unanswered}</p>
 
-<p class="text-green-600 font-bold">Correct Answers: ${correct}</p>
-<p class="text-red-600 font-bold">Wrong Answers: ${wrong}</p>
+<div class="grid grid-cols-2 gap-4 text-center p-10">
+
+<div class="bg-blue-100 p-4 rounded-lg">
+<p class="text-gray-600">Total Questions</p>
+<p class="text-2xl font-bold text-blue-500">${total}</p>
+</div>
+
+<div class="bg-purple-100 p-4 rounded-lg">
+<p class="text-gray-600">Answered</p>
+<p class="text-2xl font-bold text-purple-500">${answered}</p>
+</div>
+
+<div class="bg-yellow-100 p-4 rounded-lg">
+<p class="text-gray-600">Unanswered</p>
+<p class="text-2xl font-bold text-yellow-500">${unanswered}</p>
+</div>
+
+<div class="bg-green-100 p-4 rounded-lg">
+<p class="text-gray-600">Correct</p>
+<p class="text-2xl font-bold text-green-600">${correct}</p>
+</div>
+
+<div class="bg-red-100 p-4 rounded-lg col-span-2">
+<p class="text-gray-600">Wrong Answers</p>
+<p class="text-2xl font-bold text-red-600">${wrong}</p>
+</div>
+
+</div>
 
 `
 
         })
 
-
-    // MOVE FUNCTION OUTSIDE
     function goHome() {
 
         localStorage.removeItem("answers")
