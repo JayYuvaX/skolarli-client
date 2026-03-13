@@ -1,15 +1,12 @@
-<div id="loader" class="flex justify-center items-center h-40">
-    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-</div>
-<div id="summary" class="hidden"></div>
+<script src="https://cdn.tailwindcss.com"></script>
+<div id="summary" class="hidden "></div>
 
-<button onclick="goHome()" class="mt-6 bg-blue-500 text-white px-4 py-2 rounded">
+<button onclick="goHome()" class="mt-6 bg-blue-500 text-white px-6 py-2 rounded">
     Go to Home
 </button>
 
-<hr class="my-6">
 
-<div id="review" class="hidden"></div>
+<div id="review" class="hidden" cla></div>
 
 <script>
 
@@ -18,7 +15,7 @@
     fetch("https://skolarli-server.onrender.com/api/questions")
         .then(res => res.json())
         .then(data => {
-            document.getElementById("loader").style.display = "none"
+            // document.getElementById("loader").style.display = "none"
             document.getElementById("summary").classList.remove("hidden")
             document.getElementById("review").classList.remove("hidden")
             let total = data.length
