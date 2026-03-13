@@ -1,7 +1,7 @@
 let questions = []
 let currentQuestion = 0
 let answers = JSON.parse(localStorage.getItem("answers")) || {}
-let time = 600
+let time = 180
 
 $(document).ready(function () {
 
