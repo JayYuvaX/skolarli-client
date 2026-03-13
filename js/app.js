@@ -1,104 +1,131 @@
-let currentQuestion = 0;
-let answers = JSON.parse(localStorage.getItem("answers")) || {};
+let questions = []
+let currentQuestion = 0
+let answers = JSON.parse(localStorage.getItem("answers")) || {}
+let time = 600
 
 $(document).ready(function () {
 
     $("#startTest").click(function () {
-        $("#landing").hide();
-        $("#testArea").show();
-        renderPalette();
-        loadQuestion();
-    });
+        $("#landing").hide()
+        $("#testArea").show()
+
+        fetchQuestions()
+        startTimer()
+    })
 
     $("#nextBtn").click(function () {
-        saveAnswer();
+        saveAnswer()
+
         if (currentQuestion < questions.length - 1) {
-            currentQuestion++;
-            loadQuestion();
+            currentQuestion++
+            loadQuestion()
         }
-    });
+    })
 
     $("#prevBtn").click(function () {
-        saveAnswer();
+        saveAnswer()
+
         if (currentQuestion > 0) {
-            currentQuestion--;
-            loadQuestion();
+            currentQuestion--
+            loadQuestion()
         }
-    });
+    })
 
-    $("#submitTest").click(function () {
-        saveAnswer();
-        window.location.href = "summary.html";
-    });
+})
 
-});
+function fetchQuestions() {
+
+    $.ajax({
+        url: "http://localhost:3000/api/questions",
+        method: "GET",
+
+        success: function (data) {
+            questions = data
+
+            renderPalette()
+            loadQuestion()
+        },
+
+        error: function (err) {
+            console.log("Error fetching questions:", err)
+        }
+    })
+
+}
 
 function loadQuestion() {
 
-    let q = questions[currentQuestion];
+    let q = questions[currentQuestion]
 
     $("#questionNumber").text(
         `Question ${currentQuestion + 1} of ${questions.length}`
-    );
+    )
 
-    $("#questionText").text(q.question);
+    $("#questionText").text(q.question)
 
-    let optionsHTML = "";
+    let optionsHTML = ""
 
-    q.options.forEach((opt, index) => {
+    q.options.forEach(function (opt, index) {
 
-        let checked = answers[q.id] == index ? "checked" : "";
+        let checked = answers[q._id] == index ? "checked" : ""
 
         optionsHTML += `
-<label class="block mb-2">
-<input type="radio" name="option" value="${index}" ${checked}>
-${opt}
-</label>
-`;
+        <label class="block">
+            <input type="radio" name="option" value="${index}" ${checked}>
+            ${opt}
+        </label>
+        `
+    })
 
-    });
+    $("#options").html(optionsHTML)
 
-    $("#options").html(optionsHTML);
+    updateProgress()
+    updatePalette()
 
-    updatePalette();
 }
 
 function saveAnswer() {
 
-    let selected = $("input[name='option']:checked").val();
+    let selected = $("input[name='option']:checked").val()
 
     if (selected !== undefined) {
-
-        answers[questions[currentQuestion].id] = parseInt(selected);
-
-        localStorage.setItem("answers", JSON.stringify(answers));
-
+        answers[questions[currentQuestion]._id] = selected
+        localStorage.setItem("answers", JSON.stringify(answers))
     }
 
 }
 
 function renderPalette() {
 
-    questions.forEach((q, index) => {
+    $("#palette").html("")
+
+    questions.forEach(function (q, index) {
 
         $("#palette").append(`
-<button class="paletteBtn border px-3 py-1"
-data-index="${index}">
-${index + 1}
-</button>
-`);
+            <button class="paletteBtn border p-2" data-index="${index}">
+                ${index + 1}
+            </button>
+        `)
 
-    });
+    })
 
     $(".paletteBtn").click(function () {
 
-        saveAnswer();
+        saveAnswer()
 
-        currentQuestion = $(this).data("index");
+        currentQuestion = $(this).data("index")
 
-        loadQuestion();
+        loadQuestion()
 
-    });
+    })
+
+}
+
+function updateProgress() {
+
+    let percent = ((currentQuestion + 1) / questions.length) * 100
+
+    $("#progressBar").css("width", percent + "%")
 
 }
 
@@ -106,16 +133,59 @@ function updatePalette() {
 
     $(".paletteBtn").each(function (index) {
 
-        let qid = questions[index].id;
+        let qid = questions[index]._id
 
-        $(this).removeClass("bg-blue-500 bg-green-500");
+        $(this).removeClass("bg-blue-500 bg-green-500 text-white")
 
-        if (index === currentQuestion)
-            $(this).addClass("bg-blue-500 text-white");
+        if (index === currentQuestion) {
+            $(this).addClass("bg-blue-500 text-white")
+        }
+        else if (answers[qid] !== undefined) {
+            $(this).addClass("bg-green-500 text-white")
+        }
 
-        else if (answers[qid] !== undefined)
-            $(this).addClass("bg-green-500 text-white");
+    })
 
-    });
+}
 
+function startTimer() {
+
+    setInterval(function () {
+
+        time--
+
+        let minutes = Math.floor(time / 60)
+        let seconds = time % 60
+
+        seconds = seconds < 10 ? "0" + seconds : seconds
+
+        $("#timer").text(`${minutes}:${seconds}`)
+
+        if (time <= 0) {
+            alert("Time Up")
+            window.location.href = "summary.html"
+        }
+
+    }, 1000)
+
+    $("#submitTest").click(function () {
+
+        saveAnswer()
+
+        // check if no answers selected
+        if (Object.keys(answers).length === 0) {
+            alert("Please answer at least one question before submitting")
+            return
+        }
+
+        // confirmation popup
+        if (confirm("Are you sure you want to submit the assessment?")) {
+
+            localStorage.setItem("answers", JSON.stringify(answers))
+
+            window.location.href = "summary.html"
+
+        }
+
+    })
 }
