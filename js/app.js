@@ -36,7 +36,7 @@ $(document).ready(function () {
 function fetchQuestions() {
 
     $.ajax({
-        url: "http://localhost:3000/api/questions",
+        url: "https://skolarli-server.onrender.com/api/questions",
         method: "GET",
 
         success: function (data) {
