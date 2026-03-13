@@ -102,7 +102,7 @@ function renderPalette() {
     questions.forEach(function (q, index) {
 
         $("#palette").append(`
-            <button class="paletteBtn border p-2" data-index="${index}">
+            <button class="paletteBtn border p-3 rounded-lg" data-index="${index}">
                 ${index + 1}
             </button>
         `)
@@ -135,7 +135,7 @@ function updatePalette() {
 
         let qid = questions[index]._id
 
-        $(this).removeClass("bg-blue-500 bg-green-500 text-white")
+        $(this).removeClass("bg-blue-500 bg-green-500  text-white")
 
         if (index === currentQuestion) {
             $(this).addClass("bg-blue-500 text-white")
