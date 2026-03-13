@@ -1,18 +1,47 @@
+<div id="summary"></div>
+
 <script>
 
     let answers = JSON.parse(localStorage.getItem("answers")) || {}
 
-    let total = 5
+    fetch("https://skolarli-server.onrender.com/api/questions")
+        .then(res => res.json())
+        .then(data => {
 
-    let answered = Object.keys(answers).length
+            let total = data.length
+            let answered = Object.keys(answers).length
+            let unanswered = total - answered
 
-    let unanswered = total - answered
+            let correct = 0
+            let wrong = 0
 
-    document.write(`
-<h2>Assessment Summary</h2>
-<p>Total: ${total}</p>
-<p>Answered: ${answered}</p>
-<p>Unanswered: ${unanswered}</p>
-`)
+            data.forEach(q => {
+
+                if (answers[q._id] !== undefined) {
+
+                    if (parseInt(answers[q._id]) === q.correctAnswer) {
+                        correct++
+                    } else {
+                        wrong++
+                    }
+
+                }
+
+            })
+
+            document.getElementById("summary").innerHTML = `
+
+<h2 class="text-2xl font-bold mb-4">Assessment Summary</h2>
+
+<p>Total Questions: ${total}</p>
+<p>Answered Questions: ${answered}</p>
+<p>Unanswered Questions: ${unanswered}</p>
+
+<p class="text-green-600 font-bold">Correct Answers: ${correct}</p>
+<p class="text-red-600 font-bold">Wrong Answers: ${wrong}</p>
+
+`
+
+        })
 
 </script>
